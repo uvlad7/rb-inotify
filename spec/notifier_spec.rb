@@ -44,7 +44,7 @@ describe INotify::Notifier do
       it "ensures that new watches do not modify existing ones" do
         skip "too old kernel" unless defined?(INotify::Native::Flags::IN_MASK_CREATE)
 
-        events = recording(dir, :create, :oneshot, :mask_create)
+        recording(dir, :create, :oneshot, :mask_create)
         expect do
           recording(dir, :create, :oneshot, :mask_create)
         end.to raise_error(Errno::EEXIST)
