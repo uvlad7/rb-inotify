@@ -7,7 +7,12 @@ module INotify
     #
     # @private
     module Flags
-      LINUX_KERNEL_VERSION = Gem::Version.new(Etc.uname[:release])
+      uname = Etc.uname
+      # JRuby always writes release: 'unknown', but :version contains what :release contains on MRI and TruffleRuby.
+      release = RUBY_PLATFORM == "java" ? uname[:version] : uname[:release]
+      # give up
+      release = '0.1.0' unless Gem::Version.correct?(release)
+      LINUX_KERNEL_VERSION = Gem::Version.new(release)
       # File was accessed.
       IN_ACCESS = 0x00000001
       # Metadata changed.
