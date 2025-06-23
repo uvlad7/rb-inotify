@@ -164,16 +164,16 @@ module INotify
     # Instead, they specify options for the watcher.
     #
     # `:onlydir`
-    # : Only watch the path if it's a directory; since Linux 2.6.15
+    # : Only watch the path if it's a directory; since Linux 2.6.15.
     #
     # `:dont_follow`
-    # : Don't follow symlinks; since Linux 2.6.15
+    # : Don't follow symlinks; since Linux 2.6.15.
     #
     # `:excl_unlink`
-    # : Exclude events on unlinked objects; since Linux 2.6.36
+    # : Exclude events on unlinked objects; since Linux 2.6.36.
     #
     # `:mask_create`
-    # : Watch pathname only if it does not already have a watch associated with it, Errno::EEXIST is raised otherwise; since Linux 4.18
+    # : Watch pathname only if it does not already have a watch associated with it, Errno::EEXIST is raised otherwise; since Linux 4.18.
     #
     # `:mask_add`
     # : Add these flags to the pre-existing flags for this path.

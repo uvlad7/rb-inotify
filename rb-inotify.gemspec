@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.5'
   
   spec.add_dependency "ffi", "~> 1.0"
-  # Isn't added as a dependency because
+  # Isn't not added as a dependency because
   #  - It's a default gem on MRI 3.4.2 and TruffleRuby 24.2.1
   #  - It's not available as a gem on JRuby
   # spec.add_dependency "etc"
