@@ -8,6 +8,7 @@ module INotify
     # @private
     module Flags
       LINUX_KERNEL_VERSION = Gem::Version.new(Etc.uname[:release])
+      p LINUX_KERNEL_VERSION
       # File was accessed.
       IN_ACCESS = 0x00000001
       # Metadata changed.
