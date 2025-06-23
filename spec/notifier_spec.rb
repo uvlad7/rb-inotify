@@ -58,6 +58,9 @@ describe INotify::Notifier do
         expect do
           recording(dir, :create, :oneshot, :unknown_flag)
         end.to raise_error(NameError, 'uninitialized constant INotify::Native::Flags::IN_UNKNOWN_FLAG')
+        expect do
+          recording(dir, :create, :isdir)
+        end.to raise_error(ArgumentError, 'Invalid flag: isdir')
       end
 
       it "gets simultaneous events" do
