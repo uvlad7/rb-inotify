@@ -9,6 +9,11 @@ module INotify
     module Flags
       LINUX_KERNEL_VERSION = Gem::Version.new(Etc.uname[:release])
       p LINUX_KERNEL_VERSION # trigger workflow
+      begin
+        LINUX_KERNEL_VERSION >= "2.6.15"
+      rescue ArgumentError => e
+        p e.backtrace
+      end
       # File was accessed.
       IN_ACCESS = 0x00000001
       # Metadata changed.
