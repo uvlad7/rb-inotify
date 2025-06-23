@@ -9,7 +9,7 @@ module INotify
     module Flags
       uname = Etc.uname
       # JRuby always writes release: 'unknown', but :version contains what :release contains on MRI and TruffleRuby.
-      release = RUBY_PLATFORM == "java" ? uname[:version] : uname[:release]
+      release = RUBY_ENGINE == 'jruby' ? uname[:version] : uname[:release]
       # give up
       release = '0.1.0' unless Gem::Version.correct?(release)
       LINUX_KERNEL_VERSION = Gem::Version.new(release)
