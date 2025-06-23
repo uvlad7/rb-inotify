@@ -10,7 +10,7 @@ module INotify
       LINUX_KERNEL_VERSION = Gem::Version.new(Etc.uname[:release])
       p LINUX_KERNEL_VERSION # trigger workflow
       p Gem::Version.instance_method(:<=>)
-      p Gem::Version.instance_method(:=>)
+      p Gem::Version.instance_method(:>=)
       begin
         LINUX_KERNEL_VERSION >= "2.6.15"
       rescue ArgumentError => e
