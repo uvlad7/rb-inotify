@@ -54,6 +54,12 @@ describe INotify::Notifier do
         end.not_to raise_error
       end
 
+      it "fails if flags are not supported" do
+        expect do
+          recording(dir, :create, :oneshot, :unknown_flag)
+        end.to raise_error(NameError, 'uninitialized constant INotify::Native::Flags::IN_UNKNOWN_FLAG')
+      end
+
       it "gets simultaneous events" do
         events = recording(dir, :create)
 
