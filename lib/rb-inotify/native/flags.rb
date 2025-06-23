@@ -1,3 +1,5 @@
+require "etc"
+
 module INotify
   module Native
     # A module containing all the inotify flags
@@ -5,6 +7,7 @@ module INotify
     #
     # @private
     module Flags
+      LINUX_KERNEL_VERSION = Gem::Version.new(Etc.uname[:release])
       # File was accessed.
       IN_ACCESS = 0x00000001
       # Metadata changed.
@@ -44,10 +47,22 @@ module INotify
 
       ## Special flags.
 
-      # Only watch the path if it is a directory.
-      IN_ONLYDIR = 0x01000000
-      # Do not follow a sym link.
-      IN_DONT_FOLLOW = 0x02000000
+      if LINUX_KERNEL_VERSION >= "2.6.15"
+        # Only watch the path if it is a directory.
+        IN_ONLYDIR = 0x01000000
+        # Do not follow a sym link.
+        IN_DONT_FOLLOW = 0x02000000
+      end
+
+      if LINUX_KERNEL_VERSION >= "2.6.36"
+        # Exclude events on unlinked objects.
+        IN_EXCL_UNLINK = 0x04000000
+      end
+      if LINUX_KERNEL_VERSION >= "4.18"
+        # Only create watches.
+        IN_MASK_CREATE = 0x10000000
+      end
+
       # Add to the mask of an already existing watch.
       IN_MASK_ADD = 0x20000000
       # Only send event once.

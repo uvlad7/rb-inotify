@@ -41,6 +41,19 @@ describe INotify::Notifier do
         expect(events.first.absolute_name).to eq(dir.join("test.txt").to_s)
       end
 
+      it "ensures that new watches do not modify existing ones" do
+        skip "too old kernel" unless defined?(INotify::Native::Flags::IN_MASK_CREATE)
+
+        events = recording(dir, :create, :oneshot, :mask_create)
+        expect do
+          recording(dir, :create, :oneshot, :mask_create)
+        end.to raise_error(Errno::EEXIST)
+        dir.join("test.txt").write("hello world")
+        expect do
+          recording(dir, :create, :oneshot, :mask_create)
+        end.not_to raise_error
+      end
+
       it "gets simultaneous events" do
         events = recording(dir, :create)
 
