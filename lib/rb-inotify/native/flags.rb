@@ -1,5 +1,3 @@
-require "etc"
-
 module INotify
   module Native
     # A module containing all the inotify flags
@@ -7,12 +5,6 @@ module INotify
     #
     # @private
     module Flags
-      uname = Etc.uname
-      # JRuby always writes release: 'unknown', but :version contains what :release contains on MRI and TruffleRuby.
-      release = RUBY_ENGINE == 'jruby' ? uname[:version] : uname[:release]
-      # give up
-      release = '0.1.0' unless Gem::Version.correct?(release)
-      LINUX_KERNEL_VERSION = Gem::Version.new(release)
       # File was accessed.
       IN_ACCESS = 0x00000001
       # Metadata changed.
@@ -52,27 +44,22 @@ module INotify
 
       ## Special flags.
 
-      if LINUX_KERNEL_VERSION >= Gem::Version.new("2.6.15")
-        # Do not follow a sym link.
-        IN_DONT_FOLLOW = 0x02000000
-        # Only watch the path if it is a directory.
-        IN_ONLYDIR = 0x01000000
-      end
-
-      if LINUX_KERNEL_VERSION >= Gem::Version.new("2.6.36")
-        # Exclude events on unlinked objects.
-        IN_EXCL_UNLINK = 0x04000000
-      end
-      if LINUX_KERNEL_VERSION >= Gem::Version.new("4.18")
-        # Only create watches.
-        IN_MASK_CREATE = 0x10000000
-      end
-
+      # Do not follow a sym link
+      # available since Linux 2.6.15, causes EINVAL othervise
+      IN_DONT_FOLLOW = 0x02000000
+      # Exclude events on unlinked objects.
+      # available since Linux 2.6.36, causes EINVAL othervise
+      IN_EXCL_UNLINK = 0x04000000
       # Add to the mask of an already existing watch.
       IN_MASK_ADD = 0x20000000
       # Only send event once.
       IN_ONESHOT = 0x80000000
-
+      # Only watch the path if it is a directory.
+      # available since Linux 2.6.15, causes EINVAL othervise
+      IN_ONLYDIR = 0x01000000
+      # Only create watches.
+      # available since Linux 4.18, causes EINVAL othervise
+      IN_MASK_CREATE = 0x10000000
 
       ## Events sent by the kernel.
 
@@ -80,10 +67,10 @@ module INotify
       IN_IGNORED = 0x00008000
       # Event occurred against dir.
       IN_ISDIR = 0x40000000
-      # Backing fs was unmounted.
-      IN_UNMOUNT = 0x00002000
       # Event queued overflowed.
       IN_Q_OVERFLOW = 0x00004000
+      # Backing fs was unmounted.
+      IN_UNMOUNT = 0x00002000
 
       EVENT_ONLY_FLAGS = IN_IGNORED | IN_ISDIR | IN_UNMOUNT | IN_Q_OVERFLOW
 
